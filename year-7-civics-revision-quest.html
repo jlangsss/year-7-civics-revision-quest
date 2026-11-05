@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Year 7 Civics Revision Quest</title>
+<style>
+:root {
+  --site-primary: #254f9b;
+  --site-on-primary: #ffffff;
+  --site-secondary: #f0b84b;
+  --site-on-secondary: #1d2635;
+  --site-background: #edf3fb;
+  --site-on-background: #17243a;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); color: var(--site-on-background); background: var(--site-background); }
+#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: light-dark(var(--site-background), #111827); color: light-dark(var(--site-on-background), #edf2fb); padding-bottom: 44px; }
+.hero { background: var(--site-primary); color: var(--site-on-primary); padding: calc(34px * var(--site-spacing-scale)) max(22px, calc((100vw - 1080px)/2)); position: relative; overflow: hidden; }
+.hero:after { content: ""; position: absolute; width: 300px; height: 300px; border: 38px solid var(--site-secondary); border-radius: 50%; right: 8%; top: -190px; opacity: calc(.2 * var(--site-decoration-opacity)); }
+.hero-inner { max-width: 1080px; margin: auto; position: relative; z-index: 1; }
+.eyebrow { font-size: .78rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; opacity: .82; }
+h1 { font-family: var(--site-font-heading); font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--site-heading-scale)); line-height: 1.02; margin: 12px 0; letter-spacing: -.04em; }
+.hero p { max-width: 650px; line-height: 1.6; margin: 0; opacity: .9; }
+.shell { max-width: 1080px; margin: auto; padding: 24px 20px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: -2px; }
+.stat { background: light-dark(#ffffff, #1f2937); border: 1px solid light-dark(#dce5f2, #374151); border-radius: calc(16px * var(--site-radius-scale)); padding: 15px; }
+.stat strong { display: block; font-size: 1.5rem; color: var(--site-primary); }
+.stat span { font-size: .82rem; opacity: .75; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0 18px; }
+.tab, button { font: inherit; cursor: pointer; border: 0; border-radius: calc(12px * var(--site-radius-scale)); padding: 11px 15px; font-weight: 750; transition: transform .12s, background .12s; }
+.tab { background: light-dark(#fff, #1f2937); color: inherit; border: 1px solid light-dark(#d8e2f0, #3b475a); }
+.tab.active { background: var(--site-primary); color: var(--site-on-primary); border-color: var(--site-primary); }
+button:hover, .tab:hover { transform: translateY(-1px); }
+button:focus-visible, .tab:focus-visible { outline: 3px solid var(--site-secondary); outline-offset: 2px; }
+.primary { background: var(--site-primary); color: var(--site-on-primary); }
+.secondary { background: var(--site-secondary); color: var(--site-on-secondary); }
+.ghost { background: light-dark(#eaf0f8, #334155); color: inherit; }
+.panel { background: light-dark(#fff, #1f2937); border: 1px solid light-dark(#dce5f2, #374151); border-radius: calc(20px * var(--site-radius-scale)); padding: calc(24px * var(--site-spacing-scale)); box-shadow: 0 10px 30px rgba(20,45,80,.06); }
+.panel h2 { margin: 0 0 8px; font-size: calc(1.5rem * var(--site-heading-scale)); }
+.muted { opacity: .72; line-height: 1.55; }
+.topic-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.topic { border: 1px solid light-dark(#dce5f2, #3a475a); border-radius: 15px; padding: 18px; background: light-dark(#f9fbff, #182334); }
+.topic h3 { margin: 0 0 8px; }
+.topic p { margin: 0; line-height: 1.55; font-size: .94rem; }
+.topic .tag { display: inline-block; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--site-primary); margin-bottom: 8px; }
+.callout { border-left: 4px solid var(--site-secondary); background: light-dark(#fff8e9, #3a3020); padding: 13px 15px; border-radius: 0 12px 12px 0; line-height: 1.5; margin-top: 14px; }
+.quiz-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.progress { height: 9px; background: light-dark(#e8edf5, #374151); border-radius: 99px; overflow: hidden; flex: 1; min-width: 120px; }
+.progress > div { height: 100%; width: 0; background: var(--site-secondary); transition: width .2s; }
+.question-count { font-size: .85rem; font-weight: 800; opacity: .7; }
+.question { font-size: clamp(1.2rem, 2.5vw, 1.65rem); line-height: 1.35; margin: 12px 0 20px; font-weight: 800; }
+.answers { display: grid; gap: 10px; }
+.answer { text-align: left; padding: 15px 16px; background: light-dark(#f6f8fc, #273449); color: inherit; border: 2px solid light-dark(#e0e7f1, #3c4b60); border-radius: 13px; font-weight: 650; line-height: 1.4; }
+.answer:hover:not(:disabled) { border-color: var(--site-primary); }
+.answer:disabled { cursor: default; opacity: 1; }
+.answer.correct { border-color: #218653; background: light-dark(#e8f7ee, #183b2d); }
+.answer.wrong { border-color: #c84b4b; background: light-dark(#fff0f0, #482626); }
+.feedback { margin-top: 15px; padding: 14px; border-radius: 12px; line-height: 1.5; display: none; }
+.feedback.show { display: block; }
+.feedback.good { background: light-dark(#e8f7ee, #183b2d); }
+.feedback.bad { background: light-dark(#fff3e6, #45311f); }
+.quiz-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.result { text-align: center; padding: 20px 0 8px; }
+.result .big { font-size: 3rem; font-weight: 900; color: var(--site-primary); }
+.result h3 { font-size: 1.6rem; margin: 5px 0; }
+.hidden { display: none !important; }
+.flashcard { min-height: 190px; display: grid; place-items: center; text-align: center; padding: 28px; border-radius: 17px; background: light-dark(#f2f6fc, #273449); border: 1px dashed light-dark(#a9bdd9, #536985); cursor: pointer; }
+.flashcard .term { font-size: 1.6rem; font-weight: 900; margin-bottom: 12px; }
+.flashcard .hint { opacity: .65; font-size: .85rem; }
+.flashcard .definition { line-height: 1.6; max-width: 650px; }
+.flash-controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.sequence { display: grid; gap: 9px; margin: 16px 0; }
+.sequence button { text-align: left; background: light-dark(#f4f7fc, #273449); color: inherit; border: 1px solid light-dark(#dce5f2, #3a475a); }
+.sequence button.selected { border: 2px solid var(--site-primary); }
+.sequence button.placed { opacity: .45; }
+.sequence-result { margin-top: 12px; line-height: 1.5; }
+.teacher-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:16px; }
+.teacher-card { border:1px solid light-dark(#dce5f2,#3a475a); border-radius:15px; padding:18px; background:light-dark(#f9fbff,#182334); }
+.teacher-card h3 { margin:0 0 8px; }
+.teacher-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.team-row { display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; margin:9px 0; }
+.team-row input { min-width:0; width:100%; padding:9px; border:1px solid light-dark(#cbd7e7,#52627a); border-radius:9px; font:inherit; background:light-dark(#fff,#273449); color:inherit; }
+.team-score { font-weight:850; min-width:32px; text-align:center; }
+.whiteboard-question { font-size:1.35rem; font-weight:850; line-height:1.4; margin:14px 0; }
+.whiteboard-answer { padding:13px; border-radius:10px; background:light-dark(#fff8e9,#3a3020); line-height:1.5; }
+.print-only { display:none; }
+@media print { body * { visibility:hidden !important; } #print-sheet, #print-sheet * { visibility:visible !important; } #print-sheet { display:block !important; position:absolute; inset:0; width:100%; padding:20px; color:#111; background:#fff; } #print-sheet h1 { font-size:24px; } #print-sheet li { margin:0 0 12px; break-inside:avoid; } }
+footer { max-width: 1080px; padding: 0 20px; margin: 16px auto; font-size: .8rem; opacity: .7; line-height: 1.6; }
+a { color: inherit; }
+@media (max-width: 650px) { .stats { grid-template-columns: 1fr 1fr 1fr; gap: 7px; } .stat { padding: 10px; } .stat strong { font-size: 1.2rem; } .stat span { font-size: .72rem; } .topic-grid,.teacher-grid { grid-template-columns: 1fr; } .panel { padding: 18px; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Year 7 Humanities · Civics & Citizenship</div>
+      <h1>REVISION<br>QUEST<span style="color:var(--site-secondary)">.</span></h1>
+      <p>Level up your knowledge of political systems, the Australian Constitution, Federal Parliament and referendums. Learn a little, play a round, and beat the final challenge.</p>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="stats" aria-label="Your progress">
+      <div class="stat"><strong id="score">0</strong><span>Points earned</span></div>
+      <div class="stat"><strong id="played">0</strong><span>Questions tried</span></div>
+      <div class="stat"><strong id="streak">0</strong><span>Current streak</span></div>
+    </section>
+    <nav class="tabs" aria-label="Game sections">
+      <button class="tab active" data-view="learn">📚 Learn</button>
+      <button class="tab" data-view="quiz">🎯 Quiz game</button>
+      <button class="tab" data-view="cards">🃏 Flashcards</button>
+      <button class="tab" data-view="boss">🏆 Final challenge</button>
+      <button class="tab" data-view="teacher">🧑‍🏫 Teacher tools</button>
+    </nav>
+    <section id="learn" class="panel view">
+      <h2>Quick study guide</h2>
+      <p class="muted">Read the key ideas below, then test yourself. Select a topic to focus your revision.</p>
+      <div class="topic-grid" id="topics"></div>
+      <div class="callout"><strong>Remember:</strong> Australia is both a democracy and a constitutional monarchy. These terms describe different features of our system, so they can both be true at the same time.</div>
+    </section>
+    <section id="quiz" class="panel view hidden">
+      <div class="quiz-top"><div class="question-count" id="qcount">QUESTION 1</div><div class="progress"><div id="bar"></div></div><div class="question-count" id="qscore">0 points</div></div>
+      <div id="quizplay">
+        <div class="eyebrow" id="category">POLITICAL SYSTEMS</div>
+        <div class="question" id="question">Loading question…</div>
+        <div class="answers" id="answers"></div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <div class="quiz-actions"><button class="ghost" id="restart">↻ Restart round</button><button class="primary" id="next" disabled>Next question →</button></div>
+      </div>
+      <div id="quizresult" class="result hidden"><div class="big" id="roundpercent">0%</div><h3>Round complete!</h3><p class="muted" id="roundmessage"></p><button class="primary" id="again">Play another round</button></div>
+    </section>
+    <section id="cards" class="panel view hidden">
+      <h2>Flashcard deck</h2><p class="muted">Try to explain the term before revealing the answer. Click the card to flip it.</p>
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Reveal flashcard answer"><div><div class="term" id="flashterm">Monarchy</div><div class="hint" id="flashhint">Tap or click to reveal</div><div class="definition hidden" id="flashdef"></div></div></div>
+      <div class="flash-controls"><button class="ghost" id="prevcard">← Previous</button><span class="question-count" id="cardcount">1 / 16</span><button class="primary" id="nextcard">Next →</button></div>
+    </section>
+    <section id="boss" class="panel view hidden">
+      <h2>🏆 Final challenge: Referendum rescue</h2>
+      <p class="muted">Put the steps for changing the Australian Constitution in the correct order. Choose each step from the list. You can change your mind before checking.</p>
+      <div id="sequence" class="sequence"></div>
+      <div class="quiz-actions"><button class="ghost" id="clearseq">Start again</button><button class="primary" id="checkseq">Check my order</button></div>
+      <div id="seqresult" class="sequence-result" aria-live="polite"></div>
+    </section>
+    <section id="teacher" class="panel view hidden">
+      <h2>🧑‍🏫 Teacher tools</h2>
+      <p class="muted">Use these tools on the classroom screen, run a team competition, or print a practice sheet for students.</p>
+      <div class="teacher-grid">
+        <div class="teacher-card"><h3>Whiteboard question</h3><p class="muted">Display one question at a time. Reveal the answer and explanation when the class is ready.</p><div class="question-count" id="teacher-count">QUESTION 1</div><div class="whiteboard-question" id="teacher-question">Choose a question to begin.</div><div id="teacher-answer" class="whiteboard-answer hidden"></div><div class="teacher-actions"><button class="ghost" id="teacher-reveal">Reveal answer</button><button class="primary" id="teacher-next">Next question →</button></div></div>
+        <div class="teacher-card"><h3>Team scoreboard</h3><p class="muted">Add points as teams answer. Scores stay on this page while it remains open.</p><div id="teams"></div><div class="teacher-actions"><button class="ghost" id="add-team">+ Add team</button><button class="ghost" id="reset-teams">Reset scores</button></div></div>
+        <div class="teacher-card"><h3>Longer practice round</h3><p class="muted">The standard quiz contains 10 random questions. Choose a longer 20-question round for a more thorough revision session.</p><div class="teacher-actions"><button class="primary" id="start-20">Start 20-question quiz →</button></div></div>
+        <div class="teacher-card"><h3>Printable practice sheet</h3><p class="muted">Print a student question sheet with a separate answer key on the final page.</p><div class="teacher-actions"><button class="primary" id="print-sheet-button">Print questions + answer key</button></div></div>
+      </div>
+    </section>
+  </main>
+  <section id="print-sheet" class="print-only"></section>
+  <footer>Made for classroom revision. Current parliamentary office-holders and representation figures can change after elections and redistributions. Reference information: <a href="https://peo.gov.au/" target="_blank" rel="noopener">Parliamentary Education Office</a> · <a href="https://www.aec.gov.au/elections/referendums/" target="_blank" rel="noopener">Australian Electoral Commission</a>.</footer>
+</div>
+<script>
+const topics = [
+ {tag:'01 · Political systems',title:'Who has the power?',body:'<b>Monarchy:</b> a king or queen is the head of state. Australia, Japan and the United Kingdom are constitutional monarchies.<br><b>Democracy:</b> people have a say in government, usually by voting in elections. Australia, India and New Zealand are examples.<br><b>Dictatorship:</b> one leader or a small group holds most power, with limited political freedom. North Korea is a commonly cited example.<br><b>Anarchy:</b> a situation with no effective government or central authority. It is not a stable form of government used by a modern country.'},
+ {tag:'02 · The Constitution',title:'The rulebook for Australia',body:'A <b>constitution</b> is a set of basic rules that explains how a country is governed, how power is shared and what institutions exist. Australia’s written Constitution began at Federation in 1901.<br><b>Governor-General:</b> represents the King in Australia and performs formal constitutional duties, such as giving Royal Assent to laws and appointing ministers, generally acting on advice from elected leaders.<br><b>Written constitution – advantages:</b> clear reference, helps limit government power, and makes rules harder to change. <b>Disadvantages:</b> can be difficult to update, may be interpreted differently by courts, and can be less flexible when society changes.'},
+ {tag:'03 · Separation of powers',title:'Dividing government power',body:'The <b>Separation of Powers</b> divides government into three areas to reduce the risk of one person or group having too much power.<br><b>Legislature:</b> makes laws – Federal Parliament (the King, represented by the Governor-General, the House of Representatives and the Senate).<br><b>Executive:</b> puts laws into action and runs the country – Prime Minister, ministers and government departments/public service.<br><b>Judiciary:</b> interprets laws and decides legal cases – courts and judges.'},
+ {tag:'04 · Three levels of government',title:'Who looks after what?',body:'<b>Federal (Commonwealth):</b> national matters such as defence, immigration, currency, trade and foreign affairs.<br><b>State and territory:</b> schools, public hospitals, police, public transport and most roads.<br><b>Local councils:</b> rubbish collection, local parks, libraries, pet registration and local planning. Some responsibilities are shared, such as roads and the environment.'},
+ {tag:'05 · Federal Parliament',title:'Two houses, one Parliament',body:'Australia’s Federal Parliament has two houses: the <b>House of Representatives</b> (150 members, including 16 from WA) and the <b>Senate</b> (76 senators, including 12 from WA). That is 226 seats in total and 28 representatives from WA.<br><b>Current key people (November 2026):</b> Prime Minister Anthony Albanese; Leader of the Opposition Angus Taylor; Speaker of the House Milton Dick; Governor-General Sam Mostyn. These roles can change after elections or leadership changes.<br><b>Prime Minister:</b> leads the government. <b>Leader of the Opposition:</b> leads the largest party or coalition outside government. <b>Cabinet:</b> the senior group of ministers that makes major government decisions. <b>Ministers:</b> MPs or senators responsible for areas of government, often leading departments.<br><b>Speaker:</b> keeps order and makes sure the House of Representatives follows its rules. <b>Opposition:</b> questions and scrutinises the government, offers alternatives and holds it to account.'},
+ {tag:'06 · Forming government',title:'How does someone become PM?',body:'Australians vote for local representatives at a federal election; they do <b>not</b> directly vote for the Prime Minister. The party or coalition that can command the support of a majority in the House of Representatives forms government. Its leader usually becomes Prime Minister. The party in government chooses its leader, so a change of party leader can also change the Prime Minister.'},
+ {tag:'07 · Referendums',title:'Changing the Constitution',body:'A <b>referendum</b> is a national vote on a proposed change to the Australian Constitution. A proposed change usually needs to pass both houses of Federal Parliament by an absolute majority before it goes to voters. The Australian Electoral Commission (AEC) organises the vote and provides information about the Yes and No cases. Voters choose Yes or No.<br>It needs a <b>double majority</b>: more than half of voters across Australia must vote Yes, and more than half of voters in at least four of the six states must vote Yes. Territory votes count towards the national total, not the state count. If successful, the change receives Royal Assent.'},
+ {tag:'08 · Referendum history',title:'Have changes been successful?',body:'Constitutional change is difficult. Since Federation in 1901, <b>8 of 45</b> referendum proposals have succeeded. This shows that Australians have often voted No or the proposal has failed to win support across enough states. The 1967 referendum, which changed the Constitution in relation to Aboriginal and Torres Strait Islander peoples, was a famous successful example. The 2023 Voice referendum did not pass.'}
+];
+const questions = [
+ {c:'Political systems',q:'In a monarchy, who is the head of state?',a:['A king or queen','A group of elected judges','A military general in every case','The local council'],k:0,e:'A monarch is a king or queen. In a constitutional monarchy such as Australia, the monarch’s powers are limited by the Constitution and laws.'},
+ {c:'Political systems',q:'Which statement best describes a democracy?',a:['One person has all the power','People have a say in government, usually by voting','There is no government at all','The army always chooses the leader'],k:1,e:'In a democracy, citizens have a say in how they are governed, commonly by choosing representatives in elections.'},
+ {c:'Political systems',q:'Which is an example of a constitutional monarchy?',a:['North Korea','Australia','A country with no government','None of these'],k:1,e:'Australia is a constitutional monarchy: the King is head of state, represented by the Governor-General, while elected representatives govern.'},
+ {c:'Political systems',q:'What does dictatorship mean?',a:['Everyone votes on every law','Power is held by one leader or a small group with limited political freedom','The country is run by local councils only','There is no central authority'],k:1,e:'A dictatorship concentrates political power in one leader or a small group, with limited ability for people to freely change the government.'},
+ {c:'Political systems',q:'What is anarchy?',a:['A system led by a king','A system where people vote every year','A situation with no effective central government or authority','A parliament with two houses'],k:2,e:'Anarchy describes the absence of effective government or central authority. It is not the same as democracy.'},
+ {c:'The Constitution',q:'What is a constitution?',a:['A list of all citizens','A country’s basic rules about how it is governed','A law made by a local council','A political party’s campaign plan'],k:1,e:'A constitution sets out the basic rules, institutions and powers of government.'},
+ {c:'The Constitution',q:'What is one important role of the Governor-General?',a:['To represent the King in Australia and carry out formal constitutional duties','To decide every court case','To choose every local councillor','To lead the Opposition'],k:0,e:'The Governor-General represents the King and carries out formal duties, usually following the advice of the elected government.'},
+ {c:'The Constitution',q:'Which is an advantage of a written constitution?',a:['It can be changed instantly','It provides a clear written reference for government powers and rules','It means courts are unnecessary','It prevents all political disagreements'],k:1,e:'A written constitution makes important rules easier to find and can help limit government power.'},
+ {c:'The Constitution',q:'Which is a possible disadvantage of a written constitution?',a:['It has no rules','It can be difficult to change when society changes','It means Australia has no Parliament','It makes elections illegal'],k:1,e:'Changing the Australian Constitution requires a referendum and a double majority, so it can be difficult to update.'},
+ {c:'Separation of powers',q:'Which branch of government makes laws?',a:['Judiciary','Executive','Legislature','Police'],k:2,e:'The legislature – Federal Parliament – debates and makes laws.'},
+ {c:'Separation of powers',q:'Who belongs to the executive branch?',a:['Prime Minister and ministers','Judges only','The Speaker only','All voters'],k:0,e:'The executive includes the Prime Minister, ministers and government departments that put laws and policies into action.'},
+ {c:'Separation of powers',q:'What is the main job of the judiciary?',a:['Run election campaigns','Interpret laws and decide legal cases','Write the national budget','Collect household rubbish'],k:1,e:'The judiciary is made up of courts and judges. It interprets and applies the law in legal cases.'},
+ {c:'Three levels of government',q:'Which level is mainly responsible for defence and immigration?',a:['Local council','State government','Federal government','School board'],k:2,e:'Defence and immigration are national responsibilities of the Federal Government.'},
+ {c:'Three levels of government',q:'Who is mainly responsible for public hospitals and state police?',a:['Federal government','State or territory government','Local council','The Senate'],k:1,e:'State and territory governments are mainly responsible for public hospitals, police and schools.'},
+ {c:'Three levels of government',q:'Which is usually a local council responsibility?',a:['Defence','Foreign affairs','Rubbish collection and local parks','Currency'],k:2,e:'Local councils look after local services such as rubbish collection, parks and libraries.'},
+ {c:'Federal Parliament',q:'What are the two houses of Federal Parliament?',a:['Cabinet and courts','House of Representatives and Senate','Prime Minister and Opposition','Federal and local councils'],k:1,e:'Australia has a bicameral Federal Parliament: the House of Representatives and the Senate.'},
+ {c:'Federal Parliament',q:'How many seats are there in the House of Representatives?',a:['76','100','150','226'],k:2,e:'The House of Representatives has 150 seats. The Senate has 76, making 226 seats in the Federal Parliament.'},
+ {c:'Federal Parliament',q:'How many House of Representatives members are from Western Australia?',a:['6','12','16','28'],k:2,e:'Western Australia has 16 House of Representatives seats.'},
+ {c:'Federal Parliament',q:'How many senators represent Western Australia?',a:['6','12','16','76'],k:1,e:'Each Australian state has 12 senators, so WA has 12.'},
+ {c:'Federal Parliament',q:'How many seats in total are there in the Federal Parliament?',a:['150','176','226','250'],k:2,e:'150 members in the House plus 76 senators = 226 seats.'},
+ {c:'Federal Parliament',q:'How does someone usually become Prime Minister?',a:['Australians vote directly for the PM on a separate ballot','They lead the party or coalition that can command majority support in the House of Representatives','The Governor-General chooses a random MP','They win the most Senate seats'],k:1,e:'Australians elect MPs. The party or coalition with majority support in the House forms government, and its leader usually becomes PM.'},
+ {c:'Federal Parliament',q:'Who is the Prime Minister of Australia (November 2026)?',a:['Anthony Albanese','Angus Taylor','Milton Dick','Sam Mostyn'],k:0,e:'Anthony Albanese is the Prime Minister. Office-holders can change, so check a current source when revising in future years.'},
+ {c:'Federal Parliament',q:'What is Cabinet?',a:['All voters in Australia','The senior group of ministers that makes major government decisions','The judges of the High Court','The staff who count votes'],k:1,e:'Cabinet is the senior decision-making group of ministers in the government.'},
+ {c:'Federal Parliament',q:'What does the Speaker do in the House of Representatives?',a:['Keeps order and makes sure the House follows its rules','Leads the High Court','Chooses the Prime Minister','Runs the Australian Electoral Commission'],k:0,e:'The Speaker chairs the House, maintains order and applies its rules.'},
+ {c:'Federal Parliament',q:'What is an important role of the Opposition?',a:['To stop all elections','To scrutinise the government and offer alternative policies','To appoint judges in every court case','To run local councils'],k:1,e:'The Opposition questions government decisions, examines its work and presents alternative ideas.'},
+ {c:'Referendums',q:'What is a referendum?',a:['A vote to elect a local mayor','A national vote on a proposed change to the Constitution','A meeting of Cabinet','A court trial'],k:1,e:'A referendum asks Australian voters to approve or reject a proposed constitutional change.'},
+ {c:'Referendums',q:'What usually has to happen before a proposed constitutional change goes to a referendum?',a:['It is approved by an absolute majority in both houses of Federal Parliament','The Prime Minister announces it on TV','Every local council votes for it','The High Court writes the question'],k:0,e:'Usually the bill must pass both the House and Senate by an absolute majority before the referendum is held.'},
+ {c:'Referendums',q:'What is a double majority?',a:['Two Prime Ministers agree','More than half of voters nationally AND more than half of voters in at least four states vote Yes','Every state votes Yes','Both houses vote No'],k:1,e:'Both parts are needed: a national majority and a majority in at least four of the six states.'},
+ {c:'Referendums',q:'Do votes in the ACT and Northern Territory count towards the state part of the double majority?',a:['Yes, they count as two states','No, they count towards the national total only','Only if the vote is close','Only in local referendums'],k:1,e:'Territory votes count in the national total, but the state majority is based on the six states.'},
+ {c:'Referendums',q:'How many of Australia’s 45 referendum proposals have succeeded since Federation?',a:['2','8','22','45'],k:1,e:'Only 8 of 45 proposals have succeeded. This shows that changing the Constitution is difficult.'},
+ {c:'Referendums',q:'What happened in the 2023 Voice referendum?',a:['The proposal passed','The proposal did not pass','The Constitution was abolished','Voting was cancelled'],k:1,e:'The 2023 proposal did not achieve a double majority, so the Constitution was not changed.'}
+];
+const flashcards = [
+ ['Monarchy','A system in which a king or queen is head of state.'],['Democracy','A system where people have a say in government, usually through voting.'],['Dictatorship','A system where one leader or a small group holds most political power, with limited political freedom.'],['Anarchy','A situation with no effective government or central authority.'],['Constitution','A set of basic rules explaining how a country is governed and how power is organised.'],['Governor-General','The King’s representative in Australia who carries out formal constitutional duties.'],['Separation of Powers','Dividing government power between the legislature, executive and judiciary.'],['Legislature','The law-making branch: Federal Parliament.'],['Executive','The branch that puts laws into action: Prime Minister, ministers and departments.'],['Judiciary','The courts and judges who interpret laws and decide legal cases.'],['Federal Government','The national level of government, responsible for areas such as defence and immigration.'],['State Government','The level responsible for areas such as schools, public hospitals and police.'],['Local Council','The local level, responsible for services such as rubbish collection, parks and libraries.'],['Cabinet','The senior group of ministers that makes major government decisions.'],['Referendum','A national vote on a proposed change to the Australian Constitution.'],['Double Majority','A majority of voters nationally and a majority of voters in at least four of the six states vote Yes.']
+];
+let score=0, played=0, streak=0, round=[], qi=0, roundPoints=0, answered=false, cardIndex=0, cardRevealed=false, teacherIndex=0, teams=[{name:'Team 1',score:0},{name:'Team 2',score:0}];
+const $=id=>document.getElementById(id);
+function updateStats(){ $('score').textContent=score; $('played').textContent=played; $('streak').textContent=streak; }
+function showView(id){ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hidden',v.id!==id)); document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===id)); if(id==='quiz' && round.length===0) startRound(); if(id==='cards') renderCard(); if(id==='teacher'){renderTeacher();renderTeams();} }
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showView(t.dataset.view)));
+$('topics').innerHTML=topics.map(t=>`<article class="topic"><div class="tag">${t.tag}</div><h3>${t.title}</h3><p>${t.body}</p></article>`).join('');
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function startRound(count=10){ round=shuffle(questions).slice(0,count); qi=0; roundPoints=0; $('quizplay').classList.remove('hidden'); $('quizresult').classList.add('hidden'); renderQuestion(); showView('quiz'); }
+function renderQuestion(){let q=round[qi]; answered=false; $('qcount').textContent=`QUESTION ${qi+1} OF ${round.length}`; $('bar').style.width=`${qi/round.length*100}%`; $('qscore').textContent=`${roundPoints} points this round`; $('category').textContent=q.c.toUpperCase(); $('question').textContent=q.q; $('feedback').className='feedback'; $('feedback').textContent=''; $('next').disabled=true; $('next').textContent=qi===round.length-1?'See my result →':'Next question →'; $('answers').innerHTML=q.a.map((a,i)=>`<button class="answer" data-index="${i}">${String.fromCharCode(65+i)}. ${a}</button>`).join(''); document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>chooseAnswer(Number(b.dataset.index)))); }
+function chooseAnswer(i){if(answered)return; answered=true; played++; const q=round[qi], good=i===q.k; if(good){score+=10;roundPoints+=10;streak++;}else{streak=0;} updateStats(); document.querySelectorAll('.answer').forEach((b,j)=>{b.disabled=true;if(j===q.k)b.classList.add('correct');if(j===i&&!good)b.classList.add('wrong');}); $('feedback').className='feedback show '+(good?'good':'bad'); $('feedback').innerHTML=`<b>${good?'Correct! +10 points':'Not quite – the correct answer is '+String.fromCharCode(65+q.k)+'.'}</b><br>${q.e}`; $('next').disabled=false; $('qscore').textContent=`${roundPoints} points this round`; }
+$('next').addEventListener('click',()=>{if(!answered)return;if(qi<round.length-1){qi++;renderQuestion();}else{ $('quizplay').classList.add('hidden');$('quizresult').classList.remove('hidden');$('bar').style.width='100%';let pct=Math.round(roundPoints/(round.length*10)*100);$('roundpercent').textContent=pct+'%';$('roundmessage').textContent=pct===100?'Perfect score! You are a Civics Quest champion.':pct>=70?'Great work! Review any explanations you found tricky.':'Good effort. Read the study guide and flashcards, then try again.';}});
+$('restart').addEventListener('click',startRound);$('again').addEventListener('click',startRound);
+function renderTeacher(){const q=questions[teacherIndex];$('teacher-count').textContent=`QUESTION ${teacherIndex+1} OF ${questions.length} · ${q.c.toUpperCase()}`;$('teacher-question').textContent=q.q;$('teacher-answer').classList.add('hidden');$('teacher-answer').innerHTML=`<b>Answer: ${String.fromCharCode(65+q.k)}. ${q.a[q.k]}</b><br>${q.e}`;}
+$('teacher-next').addEventListener('click',()=>{teacherIndex=(teacherIndex+1)%questions.length;renderTeacher();});
+$('teacher-reveal').addEventListener('click',()=>$('teacher-answer').classList.toggle('hidden'));
+function renderTeams(){$('teams').innerHTML=teams.map((t,i)=>`<div class="team-row"><input aria-label="Team ${i+1} name" data-team-name="${i}" value="${t.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><span class="team-score">${t.score}</span><span><button class="ghost" data-team-add="${i}" aria-label="Add one point to ${t.name}">+1</button> <button class="ghost" data-team-minus="${i}" aria-label="Remove one point from ${t.name}">−1</button></span></div>`).join('');}
+$('teams').addEventListener('input',e=>{if(e.target.dataset.teamName!==undefined)teams[Number(e.target.dataset.teamName)].name=e.target.value;});
+$('teams').addEventListener('click',e=>{const add=e.target.dataset.teamAdd,minus=e.target.dataset.teamMinus;if(add!==undefined)teams[Number(add)].score++;if(minus!==undefined)teams[Number(minus)].score=Math.max(0,teams[Number(minus)].score-1);renderTeams();});
+$('add-team').addEventListener('click',()=>{teams.push({name:`Team ${teams.length+1}`,score:0});renderTeams();});
+$('reset-teams').addEventListener('click',()=>{teams=teams.map(t=>({...t,score:0}));renderTeams();});
+$('start-20').addEventListener('click',()=>startRound(20));
+$('print-sheet-button').addEventListener('click',()=>{const qs=questions.map((q,i)=>`<li><b>${q.q}</b><ol type="A">${q.a.map(a=>`<li>${a}</li>`).join('')}</ol></li>`).join('');const key=questions.map((q,i)=>`<li>${i+1}. ${String.fromCharCode(65+q.k)} — ${q.a[q.k]}</li>`).join('');$('print-sheet').innerHTML=`<h1>Year 7 Civics Revision — Practice Questions</h1><p>Name: ______________________________　 Date: ______________</p><p>Choose the best answer for each question.</p><ol>${qs}</ol><div style="break-before:page;page-break-before:always"><h1>Answer key — Teacher copy</h1><ol>${key}</ol></div>`;window.print();});
+function renderCard(){const c=flashcards[cardIndex];$('flashterm').textContent=c[0];$('flashdef').textContent=c[1];$('flashdef').classList.toggle('hidden',!cardRevealed);$('flashhint').classList.toggle('hidden',cardRevealed);$('cardcount').textContent=`${cardIndex+1} / ${flashcards.length}`;}
+function flipCard(){cardRevealed=!cardRevealed;renderCard();}
+$('flashcard').addEventListener('click',flipCard);$('flashcard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flipCard();}});
+$('nextcard').addEventListener('click',()=>{cardIndex=(cardIndex+1)%flashcards.length;cardRevealed=false;renderCard();});$('prevcard').addEventListener('click',()=>{cardIndex=(cardIndex-1+flashcards.length)%flashcards.length;cardRevealed=false;renderCard();});
+const steps=['A proposed change is written as a Bill and passed by an absolute majority in both houses of Federal Parliament.','The Yes and No cases are prepared and information is provided to voters.','The Australian Electoral Commission organises the referendum vote.','Australians vote Yes or No on the proposed change.','The votes are counted to see whether a double majority has been achieved.','If it passes, the change receives Royal Assent and the Constitution is changed.'];
+let selected=[];const scrambled=shuffle(steps);
+function renderSequence(){ $('sequence').innerHTML=scrambled.map((s,i)=>`<button data-step="${i}" class="${selected.includes(i)?'placed':''}" ${selected.includes(i)?'disabled':''}>${selected.includes(i)?'✓ ':''}${s}</button>`).join('');document.querySelectorAll('#sequence button').forEach(b=>b.addEventListener('click',()=>{selected.push(Number(b.dataset.step));renderSequence();})); }
+$('clearseq').addEventListener('click',()=>{selected=[];$('seqresult').textContent='';renderSequence();});
+$('checkseq').addEventListener('click',()=>{if(selected.length!==steps.length){$('seqresult').textContent=`You have selected ${selected.length} of 6 steps. Add the remaining steps first.`;return;}const chosen=selected.map(i=>scrambled[i]);const correct=chosen.every((s,i)=>s===steps[i]);$('seqresult').innerHTML=correct?'<b>Brilliant! +50 bonus points.</b> You put the referendum process in the correct order.':'<b>Not quite yet.</b> Check the order: Parliament approves the Bill → Yes/No cases and voter information → AEC organises the vote → Australians vote → double majority is checked → Royal Assent. Try again!';if(correct){score+=50;updateStats();$('checkseq').disabled=true;}});
+renderSequence();updateStats();
+</script>
+</body>
+</html>
